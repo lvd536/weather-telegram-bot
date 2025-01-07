@@ -5,9 +5,10 @@ using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
 public class WeatherCommand
 {
-    public async Task StartCommand(ITelegramBotClient botClient, Message msg, UpdateType type)
+    public async Task WeatherCmd(ITelegramBotClient botClient, Message msg, UpdateType type)
     {
-        var test = new InlineKeyboardMarkup().AddButton("Weather", "weatherCall");
-        await botClient.SendMessage(msg.Chat, "Пока что в боте есть только 1 возможность - просмотр погоды", replyMarkup: test);
+        var test = new InlineKeyboardMarkup().AddButton("Back", "startCall");
+        string weatherInfo = "Текущая погода: солнечно, +20°C";
+        await botClient.SendMessage(msg.Chat, weatherInfo, replyMarkup: test);
     }
 }
