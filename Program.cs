@@ -4,7 +4,7 @@ using Telegram.Bot.Types.Enums;
 using TgBotPractice;
 
 using var cts = new CancellationTokenSource();
-var bot = new TelegramBotClient("yourApiKey", cancellationToken: cts.Token);
+var bot = new TelegramBotClient("7557004382:AAFSqf56fgYQWHvpg1VU6zGJxJ_mdaQnkTI", cancellationToken: cts.Token);
 var me = await bot.GetMe();
 WeatherCommand weatherCommand = new WeatherCommand();
 StartCommand startCommand = new StartCommand();
@@ -17,16 +17,26 @@ cts.Cancel();
 async Task OnMessage(Message msg, UpdateType type)
 {
     if (msg.Text is null) return;
+    var commandParts = msg.Text.Split(' ');
+    var command = commandParts[0];
+    var argument = commandParts.Length > 1 ? commandParts[1] : null;
     if (msg.Text.StartsWith('/'))
     {
-        switch (msg.Text)
+        switch (command)
         {
             case "/start":
                 await startCommand.StartCmd(bot, msg, type);
                 break;
             
             case "/weather":
-                await weatherCommand.WeatherCmd(bot, msg, type);
+                if (argument != null)
+                {
+                    await weatherCommand.WeatherCmd(bot, msg, type, argument);
+                }
+                else
+                {
+                    await weatherCommand.WeatherCmd(bot, msg, type);
+                }
                 break;
         }
     }
