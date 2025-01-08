@@ -49,12 +49,11 @@ async Task OnCallbackQuery(Update update)
     switch (update.CallbackQuery?.Data)
     {
         case "weatherCall":
-            await weatherCommand.WeatherCmd(bot, update.CallbackQuery.Message, update.Type);
+            await weatherCommand.WeatherCmd(bot, update.CallbackQuery.Message ?? new Message(), update.Type);
             break;
         case "startCall":
-            await startCommand.StartCmd(bot, update.CallbackQuery.Message, update.Type);
+            await startCommand.StartCmd(bot, update.CallbackQuery.Message ?? new Message(), update.Type);
             break;
     }
 }
-
-// TODO: 2. Сделать возможность ежедневной отправки \ 3. Сделать стартовую информацию \ 4. Сделать возможность выбрать несколько городов и настроить ежедневную отправку для каждого
+// TODO: 2. Сделать возможность ежедневной отправки 4. Сделать возможность выбрать несколько городов и настроить ежедневную отправку для каждого
