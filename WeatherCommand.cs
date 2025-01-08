@@ -1,4 +1,6 @@
-﻿namespace TgBotPractice;
+﻿using Microsoft.AspNetCore.Mvc.Formatters;
+
+namespace TgBotPractice;
 using Telegram.Bot;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
@@ -9,9 +11,9 @@ public class WeatherCommand
 
     public WeatherCommand()
     {
-        _weatherService = new WeatherService("3e9eae6efa142dac8de06fd29fffca12");
+        _weatherService = new WeatherService("yourAPIKey");
     }
-
+//TODO: 3e9eae6efa142dac8de06fd29fffca12
     public async Task WeatherCmd(ITelegramBotClient botClient, Message msg, UpdateType type)
     {
         Console.WriteLine("[Weather] Начали получать данные погоды");
