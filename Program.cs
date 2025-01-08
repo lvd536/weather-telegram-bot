@@ -1,11 +1,9 @@
-﻿using OpenWeatherMap.Standard;
-using Telegram.Bot;
+﻿using Telegram.Bot;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
 using TgBotPractice;
 
-using OpenWeatherMap.Standard.Enums;
-using OpenWeatherMap.Standard.Models;
+//3e9eae6efa142dac8de06fd29fffca12
 
 using var cts = new CancellationTokenSource();
 var bot = new TelegramBotClient("7557004382:AAFSqf56fgYQWHvpg1VU6zGJxJ_mdaQnkTI", cancellationToken: cts.Token);
@@ -17,14 +15,6 @@ bot.OnUpdate += OnCallbackQuery;
 Console.WriteLine($"@{me.Username} is running... Press Enter to terminate");
 Console.ReadLine();
 cts.Cancel(); // stop the bot
-var current = new Current("Key")
-{
-    Languages = Languages.Russian,
-    FetchIcons = true,
-    ForecastTimestamps = 5
-};
-var data = await current.GetWeatherDataByCityNameAsync("samara", "ru");
-Console.WriteLine($"current temperature in samara, Ru is: {data.WeatherDayInfo.Temperature}");
 
 // МСГ Хендл
 async Task OnMessage(Message msg, UpdateType type)
