@@ -1,4 +1,6 @@
-﻿using Telegram.Bot;
+﻿using System.Runtime.InteropServices.JavaScript;
+using Telegram.Bot;
+using Telegram.Bot.Polling;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
 using TgBotPractice;
@@ -10,6 +12,7 @@ WeatherCommand weatherCommand = new WeatherCommand();
 StartCommand startCommand = new StartCommand();
 bot.OnMessage += OnMessage;
 bot.OnUpdate += OnCallbackQuery;
+bot.OnError += OnError;
 Console.WriteLine($"@{me.Username} is running... Press Enter to terminate");
 Console.ReadLine();
 cts.Cancel();
@@ -29,7 +32,7 @@ async Task OnMessage(Message msg, UpdateType type)
                 break;
             
             case "/weather":
-                if (argument != null)
+                if (argument is not null)
                 {
                     await weatherCommand.WeatherCmd(bot, msg, type, argument);
                 }
@@ -56,4 +59,9 @@ async Task OnCallbackQuery(Update update)
             break;
     }
 }
-// TODO: 2. Сделать возможность ежедневной отправки 4. Сделать возможность выбрать несколько городов и настроить ежедневную отправку для каждого
+
+async Task OnError(Exception exception, HandleErrorSource handler)
+{
+    Console.WriteLine(exception);
+    await Task.Delay(2000, cts.Token);
+}
