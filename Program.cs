@@ -5,7 +5,6 @@ using TgBotPractice;
 
 using var cts = new CancellationTokenSource();
 var bot = new TelegramBotClient("yourApiKey", cancellationToken: cts.Token);
-//TODO: 7557004382:AAFSqf56fgYQWHvpg1VU6zGJxJ_mdaQnkTI
 var me = await bot.GetMe();
 WeatherCommand weatherCommand = new WeatherCommand();
 StartCommand startCommand = new StartCommand();
