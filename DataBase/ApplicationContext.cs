@@ -3,7 +3,7 @@
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.EntityFrameworkCore;
  
-public class User
+public class Human
 {
     public int Id { get; set; }
     public long ChatId { get; set; }
@@ -14,7 +14,7 @@ public class User
 
 public class ApplicationContext : DbContext
 {
-    public DbSet<User> Users => Set<User>();
+    public DbSet<Human> Users => Set<Human>();
     public ApplicationContext()
     {
         Database.Migrate();
