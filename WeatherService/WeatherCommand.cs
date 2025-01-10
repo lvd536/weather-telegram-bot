@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc.Formatters;
+﻿using TgBotPractice.DataBase;
 
 namespace TgBotPractice;
 using Telegram.Bot;
@@ -15,12 +15,26 @@ public class WeatherCommand
     }
     public async Task WeatherCmd(ITelegramBotClient botClient, Message msg, UpdateType type)
     {
+        string city = "Samara";
         Console.WriteLine("[Weather] Начали получать данные погоды");
         try
         {
-            var weatherData = await _weatherService.GetWeatherAsync("Samara");
-            await botClient.SendMessage(msg.Chat, weatherData.GetFormattedWeather(), ParseMode.Html);
-            Console.WriteLine("[Weather] Успешно!");
+            using (ApplicationContext db = new ApplicationContext())
+            {
+                Human user = new Human { ChatId = msg.Chat.Id, City = String.Empty, Autosend = false, IsAdmin = false };
+                var findUser = db.Users.FirstOrDefault(u => u.ChatId == user.ChatId);
+                if (findUser is not null)
+                {
+                    city = findUser.City;
+                    var weatherData = await _weatherService.GetWeatherAsync(city);
+                    await botClient.SendMessage(msg.Chat, weatherData.GetFormattedWeather(), ParseMode.Html);
+                    Console.WriteLine("[Weather] Успешно!");
+                }
+                else
+                {
+                    await DbMethods.DBCheck(msg, botClient);
+                }
+            }
         }
         catch (Exception ex)
         {
