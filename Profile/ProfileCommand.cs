@@ -3,16 +3,20 @@ using Telegram.Bot;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
 using Telegram.Bot.Types.ReplyMarkups;
+using TgBotPractice.DataBase;
 
 namespace TgBotPractice.Profile;
 public class ProfileCommand
 {
     public async Task ProfileCmd(ITelegramBotClient botClient, Message msg, UpdateType type)
     {
+        string city = "People";
+        bool isAdmin = false;
+        await DbMethods.DBProfile(city, isAdmin, msg, botClient);
         string command = $"""
          Профиль пользователя в чате: {msg.Chat.Id}
-         Установлекнный город:
-         Статус:
+         Установлекнный город: {city}
+         Статус: {isAdmin}
          """;
         var keyboard = new InlineKeyboardMarkup(new[]
         {
@@ -26,6 +30,6 @@ public class ProfileCommand
                 InlineKeyboardButton.WithUrl("⭐️ GitHub проекта", "https://github.com/lvd536/weather-telegram-bot"),
             }
         });
-        await botClient.SendMessage(msg.Chat, "", ParseMode.Html, replyMarkup: keyboard);
+        await botClient.SendMessage(msg.Chat, command, ParseMode.Html, replyMarkup: keyboard);
     }
 }

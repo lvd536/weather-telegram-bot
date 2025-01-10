@@ -39,7 +39,7 @@ public class StartCommand
     
     public async Task StartCmd(ITelegramBotClient botClient, Message msg, UpdateType type)
     {
-        await DbMethods.DBCheck(msg);
+        await DbMethods.DBCheck(msg, botClient);
         var keyboard = new InlineKeyboardMarkup(new[]
         {
             new []
