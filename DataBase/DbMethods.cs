@@ -12,7 +12,7 @@ public class DbMethods
     {
         using (ApplicationContext db = new ApplicationContext())
         {
-            Human user = new Human { ChatId = msg.Chat.Id, City = String.Empty, Autosend = false, IsAdmin = false };
+            Human user = new Human { ChatId = msg.Chat.Id, City = "Samara", Autosend = false, IsAdmin = false };
             if (db.Users.Any(u => u.ChatId == user.ChatId))
             { 
                 Console.WriteLine($"ChatId: {user.ChatId} already exists.");
@@ -34,7 +34,7 @@ public class DbMethods
         }
     }
     
-    public static async Task DBProfile(string city, bool isAdmin, Message msg, ITelegramBotClient botClient)
+    /*public static async Task DBProfile(string city, bool isAdmin, Message msg, ITelegramBotClient botClient)
     {
         using (ApplicationContext db = new ApplicationContext())
         {
@@ -52,7 +52,7 @@ public class DbMethods
                 await DBCheck(msg, botClient);
             }
         }
-    }
+    }*/
 
     public static async Task DBPDefCity(string city, Message msg, ITelegramBotClient botClient)
     {

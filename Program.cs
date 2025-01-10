@@ -3,6 +3,7 @@ using Telegram.Bot.Polling;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
 using TgBotPractice;
+using TgBotPractice.DataBase;
 using TgBotPractice.Profile;
 
 using var cts = new CancellationTokenSource();
@@ -42,7 +43,8 @@ async Task OnMessage(Message msg, UpdateType type)
                 {
                     if (commandParts[1] == "default")
                     {
-                        await bot.SendMessage(msg.Chat.Id, "Default weather is " + defargument);
+                        await DbMethods.DBPDefCity(defargument, msg, bot);
+                        await bot.SendMessage(msg.Chat.Id, $"Default weather is {defargument} now");
                     }
                 }
                 else

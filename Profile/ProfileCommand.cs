@@ -10,9 +10,24 @@ public class ProfileCommand
 {
     public async Task ProfileCmd(ITelegramBotClient botClient, Message msg, UpdateType type)
     {
-        string city = "Samara";
+        string city = String.Empty;
         bool isAdmin = false;
-        await DbMethods.DBProfile(city, isAdmin, msg, botClient);
+        using (ApplicationContext db = new ApplicationContext())
+        {
+            Human user = new Human { ChatId = msg.Chat.Id, City = String.Empty, Autosend = false, IsAdmin = false };
+            var findUser = db.Users.FirstOrDefault(u => u.ChatId == user.ChatId);
+            if (findUser is not null)
+            {
+                city = findUser.City;
+                isAdmin = findUser.IsAdmin;
+            }
+            else
+            {
+                city = "Samara";
+                isAdmin = false;
+                await DbMethods.DBCheck(msg, botClient);
+            }
+        }
         string command = $"""
          Профиль пользователя в чате: {msg.Chat.Id}
          Установлекнный город: {city}
