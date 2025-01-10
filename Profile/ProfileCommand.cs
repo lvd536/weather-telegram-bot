@@ -10,13 +10,13 @@ public class ProfileCommand
 {
     public async Task ProfileCmd(ITelegramBotClient botClient, Message msg, UpdateType type)
     {
-        string city = "People";
+        string city = "Default";
         bool isAdmin = false;
         await DbMethods.DBProfile(city, isAdmin, msg, botClient);
         string command = $"""
          Профиль пользователя в чате: {msg.Chat.Id}
          Установлекнный город: {city}
-         Статус: {isAdmin}
+         Админ Статус: {isAdmin}
          """;
         var keyboard = new InlineKeyboardMarkup(new[]
         {
