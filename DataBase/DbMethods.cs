@@ -46,7 +46,7 @@ public class DbMethods
             }
             else
             {
-                city = "Default";
+                city = "Samara";
                 isAdmin = false;
                 await DBCheck(msg, botClient);
             }

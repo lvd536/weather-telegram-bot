@@ -10,7 +10,7 @@ public class ProfileCommand
 {
     public async Task ProfileCmd(ITelegramBotClient botClient, Message msg, UpdateType type)
     {
-        string city = "Default";
+        string city = "Samara";
         bool isAdmin = false;
         await DbMethods.DBProfile(city, isAdmin, msg, botClient);
         string command = $"""
