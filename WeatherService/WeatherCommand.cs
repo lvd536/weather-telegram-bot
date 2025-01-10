@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc.Formatters;
-
-namespace TgBotPractice;
+﻿namespace TgBotPractice;
 using Telegram.Bot;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
