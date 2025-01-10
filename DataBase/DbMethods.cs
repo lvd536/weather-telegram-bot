@@ -39,15 +39,34 @@ public class DbMethods
         using (ApplicationContext db = new ApplicationContext())
         {
             Human user = new Human { ChatId = msg.Chat.Id, City = String.Empty, Autosend = false, IsAdmin = false };
-            if (db.Users.Any(u => u.ChatId == user.ChatId))
+            var findUser = db.Users.FirstOrDefault(u => u.ChatId == user.ChatId);
+            if (findUser is not null)
             {
-                city = user.City;
-                isAdmin = user.IsAdmin;
+                city = findUser.City;
+                isAdmin = findUser.IsAdmin;
             }
             else
             {
                 city = "Samara";
                 isAdmin = false;
+                await DBCheck(msg, botClient);
+            }
+        }
+    }
+
+    public static async Task DBPDefCity(string city, Message msg, ITelegramBotClient botClient)
+    {
+        using (ApplicationContext db = new ApplicationContext())
+        {
+            Human user = new Human { ChatId = msg.Chat.Id, City = String.Empty, Autosend = false, IsAdmin = false };
+            var findUser = db.Users.FirstOrDefault(u => u.ChatId == user.ChatId);
+            if (findUser is not null)
+            {
+                findUser.City = city;
+                await db.SaveChangesAsync();
+            }
+            else
+            {
                 await DBCheck(msg, botClient);
             }
         }
