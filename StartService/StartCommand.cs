@@ -1,5 +1,5 @@
 ﻿using Telegram.Bot.Types.ReplyMarkups;
-namespace TgBotPractice;
+namespace TgBotPractice.StartService;
 using Telegram.Bot;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;

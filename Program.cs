@@ -2,17 +2,17 @@
 using Telegram.Bot.Polling;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
-using TgBotPractice;
 using TgBotPractice.DataBase;
 using TgBotPractice.Profile;
+using TgBotPractice.StartService;
 using TgBotPractice.WeatherService;
 
 using var cts = new CancellationTokenSource();
 var bot = new TelegramBotClient("7557004382:AAFSqf56fgYQWHvpg1VU6zGJxJ_mdaQnkTI", cancellationToken: cts.Token);
 var me = await bot.GetMe();
-WeatherCommand weatherCommand = new WeatherCommand();
-StartCommand startCommand = new StartCommand();
-ProfileCommand profileCommand = new ProfileCommand();
+var weatherCommand = new WeatherCommand();
+var startCommand = new StartCommand();
+var profileCommand = new ProfileCommand();
 bot.OnMessage += OnMessage;
 bot.OnUpdate += OnCallbackQuery;
 bot.OnError += OnError;
