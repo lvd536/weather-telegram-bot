@@ -5,6 +5,7 @@ using Telegram.Bot.Types.Enums;
 using TgBotPractice;
 using TgBotPractice.DataBase;
 using TgBotPractice.Profile;
+using TgBotPractice.WeatherService;
 
 using var cts = new CancellationTokenSource();
 var bot = new TelegramBotClient("7557004382:AAFSqf56fgYQWHvpg1VU6zGJxJ_mdaQnkTI", cancellationToken: cts.Token);
@@ -43,7 +44,7 @@ async Task OnMessage(Message msg, UpdateType type)
                 {
                     if (commandParts[1] == "default")
                     {
-                        await DbMethods.DBPDefCity(defargument, msg, bot);
+                        await DbMethods.DbDefCity(defargument, msg, bot);
                         await bot.SendMessage(msg.Chat.Id, $"Default weather is {defargument} now");
                     }
                 }

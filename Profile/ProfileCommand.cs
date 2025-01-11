@@ -1,5 +1,4 @@
-﻿using Microsoft.VisualBasic;
-using Telegram.Bot;
+﻿using Telegram.Bot;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
 using Telegram.Bot.Types.ReplyMarkups;
@@ -10,8 +9,8 @@ public class ProfileCommand
 {
     public async Task ProfileCmd(ITelegramBotClient botClient, Message msg, UpdateType type)
     {
-        string city = String.Empty;
-        bool isAdmin = false;
+        string city;
+        bool isAdmin;
         using (ApplicationContext db = new ApplicationContext())
         {
             Human user = new Human { ChatId = msg.Chat.Id, City = String.Empty, Autosend = false, IsAdmin = false };
@@ -25,7 +24,7 @@ public class ProfileCommand
             {
                 city = "Samara";
                 isAdmin = false;
-                await DbMethods.DBCheck(msg, botClient);
+                await DbMethods.DbCheck(msg, botClient);
             }
         }
         string command = $"""

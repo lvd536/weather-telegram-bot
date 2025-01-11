@@ -1,14 +1,11 @@
 ﻿namespace TgBotPractice.DataBase;
-using Telegram.Bot.Types.ReplyMarkups;
-using TgBotPractice.DataBase;
 using Telegram.Bot;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
 
 public class DbMethods
 {
-    //Human user = new Human { ChatId = msg.Chat.Id, City = String.Empty, Autosend = false, IsAdmin = false };
-    public static async Task DBCheck(Message msg, ITelegramBotClient botClient)
+    public static async Task DbCheck(Message msg, ITelegramBotClient botClient)
     {
         using (ApplicationContext db = new ApplicationContext())
         {
@@ -33,28 +30,7 @@ public class DbMethods
 
         }
     }
-    
-    /*public static async Task DBProfile(string city, bool isAdmin, Message msg, ITelegramBotClient botClient)
-    {
-        using (ApplicationContext db = new ApplicationContext())
-        {
-            Human user = new Human { ChatId = msg.Chat.Id, City = String.Empty, Autosend = false, IsAdmin = false };
-            var findUser = db.Users.FirstOrDefault(u => u.ChatId == user.ChatId);
-            if (findUser is not null)
-            {
-                city = findUser.City;
-                isAdmin = findUser.IsAdmin;
-            }
-            else
-            {
-                city = "Samara";
-                isAdmin = false;
-                await DBCheck(msg, botClient);
-            }
-        }
-    }*/
-
-    public static async Task DBPDefCity(string city, Message msg, ITelegramBotClient botClient)
+    public static async Task DbDefCity(string city, Message msg, ITelegramBotClient botClient)
     {
         using (ApplicationContext db = new ApplicationContext())
         {
@@ -67,7 +43,7 @@ public class DbMethods
             }
             else
             {
-                await DBCheck(msg, botClient);
+                await DbCheck(msg, botClient);
             }
         }
     }

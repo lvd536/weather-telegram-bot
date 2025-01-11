@@ -1,6 +1,6 @@
 ﻿using TgBotPractice.DataBase;
 
-namespace TgBotPractice;
+namespace TgBotPractice.WeatherService;
 using Telegram.Bot;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
@@ -15,7 +15,7 @@ public class WeatherCommand
     }
     public async Task WeatherCmd(ITelegramBotClient botClient, Message msg, UpdateType type)
     {
-        string city = "Samara";
+        string city;
         Console.WriteLine("[Weather] Начали получать данные погоды");
         try
         {
@@ -32,7 +32,7 @@ public class WeatherCommand
                 }
                 else
                 {
-                    await DbMethods.DBCheck(msg, botClient);
+                    await DbMethods.DbCheck(msg, botClient);
                 }
             }
         }
