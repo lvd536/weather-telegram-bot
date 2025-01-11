@@ -11,7 +11,7 @@ public class ProfileCommand
     {
         string city;
         bool isAdmin;
-        using (ApplicationContext db = new ApplicationContext())
+        await using (ApplicationContext db = new ApplicationContext())
         {
             Human user = new Human { ChatId = msg.Chat.Id, City = String.Empty, Autosend = false, IsAdmin = false };
             var findUser = db.Users.FirstOrDefault(u => u.ChatId == user.ChatId);
