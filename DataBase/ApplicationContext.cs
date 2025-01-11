@@ -17,7 +17,7 @@ public class ApplicationContext : DbContext
     public DbSet<Human> Users => Set<Human>();
     public ApplicationContext()
     {
-        //Database.Migrate();
+        Database.Migrate();
     }
     
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
