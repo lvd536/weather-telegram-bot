@@ -17,12 +17,12 @@ public class ApplicationContext : DbContext
     public DbSet<Human> Users => Set<Human>();
     public ApplicationContext()
     {
-        Database.Migrate();
+        //Database.Migrate();
     }
     
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseSqlite("Data Source=test.db");
+        optionsBuilder.UseSqlite("Data Source=database.db");
     }
 }
 
@@ -31,7 +31,7 @@ public class SampleContextFactory : IDesignTimeDbContextFactory<ApplicationConte
     public ApplicationContext CreateDbContext(string[] args)
     {
         var optionsBuilder = new DbContextOptionsBuilder<ApplicationContext>();
-        optionsBuilder.UseSqlite("Data Source=test.db");
+        optionsBuilder.UseSqlite("Data Source=database.db");
         
         return new ApplicationContext();
     }
