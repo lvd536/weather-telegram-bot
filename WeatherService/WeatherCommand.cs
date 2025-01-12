@@ -1,21 +1,19 @@
-﻿using TgBotPractice.DataBase;
-
-namespace TgBotPractice.WeatherService;
+﻿namespace TgBotPractice.WeatherService;
 using Telegram.Bot;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
+using DataBase;
 
 public class WeatherCommand
 {
     private readonly WeatherService _weatherService;
-
+    private string _city;
     public WeatherCommand()
     {
         _weatherService = new WeatherService("3e9eae6efa142dac8de06fd29fffca12");
     }
     public async Task WeatherCmd(ITelegramBotClient botClient, Message msg, UpdateType type)
     {
-        string city;
         Console.WriteLine("[Weather] Начали получать данные погоды");
         try
         {
@@ -25,8 +23,8 @@ public class WeatherCommand
                 var findUser = db.Users.FirstOrDefault(u => u.ChatId == user.ChatId);
                 if (findUser is not null)
                 {
-                    city = findUser.City;
-                    var weatherData = await _weatherService.GetWeatherAsync(city);
+                    _city = findUser.City;
+                    var weatherData = await _weatherService.GetWeatherAsync(_city);
                     await botClient.SendMessage(msg.Chat, weatherData.GetFormattedWeather(), ParseMode.Html);
                     Console.WriteLine("[Weather] Успешно!");
                 }
