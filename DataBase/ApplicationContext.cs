@@ -7,7 +7,7 @@ public class Human
 {
     public int Id { get; set; }
     public long ChatId { get; set; }
-    public string City { get; set; }
+    public string City { get; set; } = null!;
     public bool Autosend { get; set; }
     public bool IsAdmin { get; set; }
 }
