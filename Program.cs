@@ -56,6 +56,9 @@ async Task OnMessage(Message msg, UpdateType type)
             case "/profile":
                 await profileCommand.ProfileCmd(bot, msg, type);
                 break;
+            case "/auto":
+                await weatherCommand.WeatherCmdAuto(bot, msg, type);
+                break;
         }
     }
     Console.WriteLine($"[Debug] Received {type} '{msg.Text}' in {msg.Chat}");
