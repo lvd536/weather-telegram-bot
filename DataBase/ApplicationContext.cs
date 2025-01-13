@@ -10,6 +10,8 @@ public class Human
     public string City { get; set; } = null!;
     public bool Autosend { get; set; }
     public bool IsAdmin { get; set; }
+    
+    public DateTime AutoWeather = new DateTime();
 }
 
 public class ApplicationContext : DbContext
