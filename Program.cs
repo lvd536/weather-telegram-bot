@@ -26,7 +26,7 @@ async Task OnMessage(Message msg, UpdateType type)
     var commandParts = msg.Text.Split(' ');
     var command = commandParts[0];
     var argument = commandParts.Length == 2 ? commandParts[1] : null;
-    var defargument = commandParts.Length == 3 ? commandParts[2] : null;
+    var defArgument = commandParts.Length == 3 ? commandParts[2] : null;
     if (msg.Text.StartsWith('/'))
     {
         switch (command)
@@ -40,12 +40,17 @@ async Task OnMessage(Message msg, UpdateType type)
                 {
                     await weatherCommand.WeatherCmd(bot, msg, type, argument);
                 }
-                else if (commandParts.Length >= 1 && defargument is not null)
+                else if (defArgument is not null)
                 {
-                    if (commandParts[1] == "default")
+                    switch (commandParts[1])
                     {
-                        await DbMethods.DbDefCity(defargument, msg, bot);
-                        await bot.SendMessage(msg.Chat.Id, $"Default weather is {defargument} now");
+                        case "default":
+                            await DbMethods.DbDefCity(defArgument, msg, bot);
+                            await bot.SendMessage(msg.Chat.Id, $"Default weather is {defArgument} now");
+                            break;
+                        case "auto":
+                            await weatherCommand.WeatherAutoCmd(bot, msg, type, commandParts[2]);
+                            break;
                     }
                 }
                 else
@@ -55,9 +60,6 @@ async Task OnMessage(Message msg, UpdateType type)
                 break;
             case "/profile":
                 await profileCommand.ProfileCmd(bot, msg, type);
-                break;
-            case "/auto":
-                await weatherCommand.WeatherCmdAuto(bot, msg, type);
                 break;
         }
     }
