@@ -8,7 +8,6 @@ namespace TgBotPractice.Profile;
 public class ProfileCommand
 {
     private string _city;
-    private int _autoWeather;
     private bool _autoSend;
     private bool _isAdmin;
     public async Task ProfileCmd(ITelegramBotClient botClient, Message msg, UpdateType type)
@@ -21,14 +20,14 @@ public class ProfileCommand
             {
                 _city = findUser.City;
                 _autoSend = findUser.Autosend; // bool
-                _autoWeather = Convert.ToInt32(findUser.AutoWeather);
+                //_autoWeather = Convert.ToInt32(findUser.AutoWeather);
                 _isAdmin = findUser.IsAdmin;
             }
             else
             {
                 _city = "Samara";
                 _autoSend = false; // bool
-                _autoWeather = 0;
+                //_autoWeather = 0;
                 _isAdmin = false;
                 await DbMethods.DbCheck(msg, botClient);
             }
@@ -37,7 +36,6 @@ public class ProfileCommand
          Профиль пользователя в чате: {msg.Chat.Id}
          Установлекнный город: {_city}
          Статус автоотправки: {_autoSend}
-         Время авто отправки: {_autoWeather}
          Админ Статус: {_isAdmin}
          """;
         var keyboard = new InlineKeyboardMarkup(new[]

@@ -73,6 +73,7 @@ public class WeatherCommand
                 
                 if (TimeSpan.TryParse(input, out TimeSpan targetTime))
                 {
+                    await botClient.SendMessage(msg.Chat, $"Вы уже ранее установили время на {targetTime}. Запускаем таймер еще раз", ParseMode.Html);
                     Console.WriteLine("[Debug Timer] Таймер запущен. Рассылка будет происходить ежедневно в указанное время.");
                     Task backgroundTask = Task.Run(async () =>
                     {
