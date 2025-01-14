@@ -11,7 +11,7 @@ public class Human
     public bool Autosend { get; set; }
     public bool IsAdmin { get; set; }
     
-    public DateTime AutoWeather = new DateTime();
+    public TimeSpan AutoWeather;
 }
 
 public class ApplicationContext : DbContext
