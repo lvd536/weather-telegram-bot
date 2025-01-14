@@ -63,17 +63,17 @@ public class WeatherCommand
     
     public async Task WeatherAutoCmd(ITelegramBotClient botClient, Message msg, UpdateType type, string input)
     {   
-        await using (ApplicationContext db = new ApplicationContext())
+        using (ApplicationContext db = new ApplicationContext())
         {
             var findUserByAutosend = db.Users.FirstOrDefault(u => u.Autosend != false);
             if (findUserByAutosend is not null)
             {
                 input = findUserByAutosend.AutoWeather.ToString();
-                Console.WriteLine($"[Debug] успешно применено время с DB - {input}");
+                Console.WriteLine($"[Debug] успешно применено время с DB - {findUserByAutosend.AutoWeather.ToString()}");
                 
                 if (TimeSpan.TryParse(input, out TimeSpan targetTime))
                 {
-                    await botClient.SendMessage(msg.Chat, $"Вы уже ранее установили время на {targetTime}. Запускаем таймер еще раз", ParseMode.Html);
+                    await botClient.SendMessage(msg.Chat, $"Вы уже ранее установили время на {findUserByAutosend.AutoWeather}. Запускаем таймер еще раз", ParseMode.Html);
                     Console.WriteLine("[Debug Timer] Таймер запущен. Рассылка будет происходить ежедневно в указанное время.");
                     Task backgroundTask = Task.Run(async () =>
                     {
@@ -107,12 +107,15 @@ public class WeatherCommand
                 
                 if (TimeSpan.TryParse(input, out TimeSpan targetTime))
                 {
+                    Console.WriteLine(input);
+                    Console.WriteLine(targetTime);
                     Human user = new Human { ChatId = msg.Chat.Id, City = String.Empty, Autosend = false, IsAdmin = false };
                     var findUserById = db.Users.FirstOrDefault(u => u.ChatId == user.ChatId);
                     if (findUserById is not null)
                     {
                         findUserById.Autosend = true;
                         findUserById.AutoWeather = targetTime;
+                        db.SaveChanges();
                     }
                     Console.WriteLine("[Debug Timer] Таймер запущен. Рассылка будет происходить ежедневно в указанное время.");
                     Task backgroundTask = Task.Run(async () =>
