@@ -8,6 +8,8 @@ namespace TgBotPractice.Profile;
 public class ProfileCommand
 {
     private string _city;
+    private int _autoWeather;
+    private bool _autoSend;
     private bool _isAdmin;
     public async Task ProfileCmd(ITelegramBotClient botClient, Message msg, UpdateType type)
     {
@@ -18,11 +20,15 @@ public class ProfileCommand
             if (findUser is not null)
             {
                 _city = findUser.City;
+                _autoSend = findUser.Autosend; // bool
+                _autoWeather = Convert.ToInt32(findUser.AutoWeather);
                 _isAdmin = findUser.IsAdmin;
             }
             else
             {
                 _city = "Samara";
+                _autoSend = false; // bool
+                _autoWeather = 0;
                 _isAdmin = false;
                 await DbMethods.DbCheck(msg, botClient);
             }
@@ -30,6 +36,8 @@ public class ProfileCommand
         string command = $"""
          Профиль пользователя в чате: {msg.Chat.Id}
          Установлекнный город: {_city}
+         Статус автоотправки: {_autoSend}
+         Время авто отправки: {_autoWeather}
          Админ Статус: {_isAdmin}
          """;
         var keyboard = new InlineKeyboardMarkup(new[]
@@ -41,7 +49,7 @@ public class ProfileCommand
             new []
             {
                 InlineKeyboardButton.WithUrl("📱 Telegram разработчика", "https://t.me/lvdshka"),
-                InlineKeyboardButton.WithUrl("⭐️ GitHub проекта", "https://github.com/lvd536/weather-telegram-bot"),
+                InlineKeyboardButton.WithUrl("⭐️ GitHub source проекта", "https://github.com/lvd536/weather-telegram-bot"),
             }
         });
         await botClient.SendMessage(msg.Chat, command, ParseMode.Html, replyMarkup: keyboard);
