@@ -8,7 +8,6 @@ public class WeatherCommand
 {
     private readonly WeatherService _weatherService;
     private string _city;
-    private long _time;
     public WeatherCommand()
     {
         _weatherService = new WeatherService("3e9eae6efa142dac8de06fd29fffca12");
@@ -74,24 +73,24 @@ public class WeatherCommand
                 
                 if (TimeSpan.TryParse(input, out TimeSpan targetTime))
                 {
-                    Console.WriteLine("Таймер запущен. Рассылка будет происходить ежедневно в указанное время.");
+                    Console.WriteLine("[Debug Timer] Таймер запущен. Рассылка будет происходить ежедневно в указанное время.");
                     Task backgroundTask = Task.Run(async () =>
                     {
                         while (true)
                         {
                             DateTime now = DateTime.Now;
-                            Console.WriteLine($"Начал создавать рассылку для чата {msg.Chat}! Текущее время: {now}");
+                            Console.WriteLine($"[Debug] Начал создавать рассылку для чата {msg.Chat}! Текущее время: {now}");
                             DateTime nextCall = now.Date + targetTime;
                             if (nextCall <= now)
                             {
                                 nextCall = nextCall.AddDays(1);
                             }
-                            Console.WriteLine($"Рассылка в чат {msg.Chat} будет отправлена в {nextCall}");
+                            Console.WriteLine($"[Debug] Рассылка в чат {msg.Chat} будет отправлена в {nextCall}");
                             TimeSpan timeToWait = nextCall - now;
                     
                             if (timeToWait.TotalMilliseconds < 0)
                             {
-                                Console.WriteLine("Ошибка: отрицательное время ожидания. Проверьте логику расчета nextCall.");
+                                Console.WriteLine("[Debug] Ошибка: отрицательное время ожидания. Проверьте логику расчета nextCall.");
                                 break;
                             }
                             await Task.Delay(timeToWait);
@@ -114,29 +113,29 @@ public class WeatherCommand
                         findUserById.Autosend = true;
                         findUserById.AutoWeather = targetTime;
                     }
-                    Console.WriteLine("Таймер запущен. Рассылка будет происходить ежедневно в указанное время.");
+                    Console.WriteLine("[Debug Timer] Таймер запущен. Рассылка будет происходить ежедневно в указанное время.");
                     Task backgroundTask = Task.Run(async () =>
                     {
                         while (true)
                         {
                             DateTime now = DateTime.Now;
-                            Console.WriteLine($"Начал создавать рассылку для чата {msg.Chat}! Текущее время: {now}");
+                            Console.WriteLine($"[Debug] Начал создавать рассылку для чата {msg.Chat}! Текущее время: {now}");
                             DateTime nextCall = now.Date + targetTime;
                             if (nextCall <= now)
                             {
                                 nextCall = nextCall.AddDays(1);
                             }
-                            Console.WriteLine($"Рассылка в чат {msg.Chat} будет отправлена в {nextCall}");
+                            Console.WriteLine($"[Debug] Рассылка в чат {msg.Chat} будет отправлена в {nextCall}");
                             TimeSpan timeToWait = nextCall - now;
                     
                             if (timeToWait.TotalMilliseconds < 0)
                             {
-                                Console.WriteLine("Ошибка: отрицательное время ожидания. Проверьте логику расчета nextCall.");
+                                Console.WriteLine("[Debug] Ошибка: отрицательное время ожидания. Проверьте логику расчета nextCall.");
                                 break;
                             }
                             await Task.Delay(timeToWait);
                             await WeatherCmd(botClient, msg, type);
-                            Console.WriteLine($"Рассылка для чата {msg.Chat} успешно выполнена в {DateTime.Now}");
+                            Console.WriteLine($"[Debug] Рассылка для чата {msg.Chat} успешно выполнена в {DateTime.Now}");
                         }
                     });
                 }
