@@ -86,10 +86,14 @@ async Task OnCallbackQuery(Update update)
     switch (update.CallbackQuery?.Data)
     {
         case "weatherCall":
-            await weatherCommand.WeatherCmd(bot, update.CallbackQuery.Message ?? new Message(), update.Type);
+            Task backgroundWeatherCallBackTask =  Task.Run(async () => 
+                await weatherCommand.WeatherCmd(bot, update.CallbackQuery.Message ?? new Message(), update.Type)
+            );
             break;
         case "startCall":
-            await startCommand.StartCmd(bot, update.CallbackQuery.Message ?? new Message(), update.Type);
+            Task backgroundStartCallBackTask =  Task.Run(async () => 
+                await startCommand.StartCmd(bot, update.CallbackQuery.Message ?? new Message(), update.Type)
+            );
             break;
     }
 }
