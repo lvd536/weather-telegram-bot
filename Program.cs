@@ -32,34 +32,48 @@ async Task OnMessage(Message msg, UpdateType type)
         switch (command)
         {
             case "/start":
-                await startCommand.StartCmd(bot, msg, type);
+                Task backgroundStartCmdTask =  Task.Run(async () => 
+                    await startCommand.StartCmd(bot, msg, type)
+                );
                 break;
             
             case "/weather":
                 if (argument is not null)
                 {
-                    await weatherCommand.WeatherCmd(bot, msg, type, argument);
+                    Task backgroundDefaultWeatherTask =  Task.Run(async () => 
+                        await weatherCommand.WeatherCmd(bot, msg, type, argument)
+                    );
                 }
                 else if (defArgument is not null)
                 {
                     switch (commandParts[1])
                     {
                         case "default":
-                            await DbMethods.DbDefCity(defArgument, msg, bot);
-                            await bot.SendMessage(msg.Chat.Id, $"Default weather is {defArgument} now");
+                            Task backgroundCityAddToWeatherTask =  Task.Run(async () => 
+                                await DbMethods.DbDefCity(defArgument, msg, bot)
+                            );
+                            Task backgroundDefCityMsgTask =  Task.Run(async () => 
+                                await bot.SendMessage(msg.Chat.Id, $"Default weather is {defArgument} now")
+                            );
                             break;
                         case "auto":
-                            await weatherCommand.WeatherAutoCmd(bot, msg, type, commandParts[2]);
+                            Task backgroundAutoWeatherTask =  Task.Run(async () => 
+                                await weatherCommand.WeatherAutoCmd(bot, msg, type, commandParts[2])
+                            );
                             break;
                     }
                 }
                 else
                 {
-                    await weatherCommand.WeatherCmd(bot, msg, type);
+                    Task backgroundDefWeatherTask =  Task.Run(async () => 
+                        await weatherCommand.WeatherCmd(bot, msg, type)
+                    );
                 }
                 break;
             case "/profile":
-                await profileCommand.ProfileCmd(bot, msg, type);
+                Task backgroundProfileTask =  Task.Run(async () => 
+                    await profileCommand.ProfileCmd(bot, msg, type)
+                );
                 break;
         }
     }
