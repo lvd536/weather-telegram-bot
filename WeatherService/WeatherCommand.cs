@@ -65,15 +65,16 @@ public class WeatherCommand
     {   
         using (ApplicationContext db = new ApplicationContext())
         {
-            var findUserByAutosend = db.Users.FirstOrDefault(u => u.Autosend != false);
+            Human _autoSend = new Human { ChatId = msg.Chat.Id, City = String.Empty, Autosend = true, IsAdmin = false, WeatherTime = input };
+            var findUserByAutosend = db.Users.FirstOrDefault(u => u.ChatId == _autoSend.ChatId && u.Autosend == _autoSend.Autosend && u.WeatherTime == _autoSend.WeatherTime);
             if (findUserByAutosend is not null)
             {
-                input = findUserByAutosend.AutoWeather.ToString();
-                Console.WriteLine($"[Debug] успешно применено время с DB - {findUserByAutosend.AutoWeather.ToString()}");
+                input = findUserByAutosend.WeatherTime;
+                Console.WriteLine($"[Debug] успешно применено время с DB - {findUserByAutosend.WeatherTime}");
                 
                 if (TimeSpan.TryParse(input, out TimeSpan targetTime))
                 {
-                    await botClient.SendMessage(msg.Chat, $"Вы уже ранее установили время на {findUserByAutosend.AutoWeather}. Запускаем таймер еще раз", ParseMode.Html);
+                    await botClient.SendMessage(msg.Chat, $"Вы уже ранее установили время на {findUserByAutosend.WeatherTime}. Запускаем таймер еще раз", ParseMode.Html);
                     Console.WriteLine("[Debug Timer] Таймер запущен. Рассылка будет происходить ежедневно в указанное время.");
                     Task backgroundTask = Task.Run(async () =>
                     {
@@ -109,15 +110,17 @@ public class WeatherCommand
                 {
                     Console.WriteLine(input);
                     Console.WriteLine(targetTime);
-                    Human user = new Human { ChatId = msg.Chat.Id, City = String.Empty, Autosend = false, IsAdmin = false };
+                    Human user = new Human { ChatId = msg.Chat.Id, City = String.Empty, Autosend = true, IsAdmin = false, WeatherTime = input};
                     var findUserById = db.Users.FirstOrDefault(u => u.ChatId == user.ChatId);
                     if (findUserById is not null)
                     {
-                        findUserById.Autosend = true;
-                        findUserById.AutoWeather = targetTime;
-                        db.SaveChanges();
+                        findUserById.Autosend = user.Autosend;
+                        findUserById.WeatherTime = user.WeatherTime;
+                        await db.SaveChangesAsync();
                     }
                     Console.WriteLine("[Debug Timer] Таймер запущен. Рассылка будет происходить ежедневно в указанное время.");
+                    await botClient.SendMessage(msg.Chat, $"Таймер запущен. Рассылка будет происходить ежедневно в указанное время ({findUserById?.WeatherTime}).", ParseMode.Html);
+
                     Task backgroundTask = Task.Run(async () =>
                     {
                         while (true)
@@ -145,7 +148,7 @@ public class WeatherCommand
                 }
                 else
                 {
-                    await botClient.SendMessage(msg.Chat, "Неверно указано время! Пример: 8:00 | /weather auto 8:00", ParseMode.Html);
+                    await botClient.SendMessage(msg.Chat, "Неверно указано время! Пример: /weather auto 8:00", ParseMode.Html);
                 }
             }
         }

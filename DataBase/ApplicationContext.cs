@@ -10,8 +10,7 @@ public class Human
     public string City { get; set; } = null!;
     public bool Autosend { get; set; }
     public bool IsAdmin { get; set; }
-    
-    public TimeSpan AutoWeather;
+    public string WeatherTime { get; set; }
 }
 
 public class ApplicationContext : DbContext

@@ -9,7 +9,7 @@ public class DbMethods
     {
         using (ApplicationContext db = new ApplicationContext())
         {
-            Human user = new Human { ChatId = msg.Chat.Id, City = "Samara", Autosend = false, IsAdmin = false };
+            Human user = new Human { ChatId = msg.Chat.Id, City = "Samara", Autosend = false, IsAdmin = false, WeatherTime = String.Empty};
             if (db.Users.Any(u => u.ChatId == user.ChatId))
             { 
                 Console.WriteLine($"ChatId: {user.ChatId} already exists.");
