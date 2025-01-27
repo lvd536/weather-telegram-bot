@@ -13,6 +13,7 @@ var me = await bot.GetMe();
 var weatherCommand = new WeatherCommand();
 var startCommand = new StartCommand();
 var profileCommand = new ProfileCommand();
+var notesCommand = new NotesCommand();
 bot.OnMessage += OnMessage;
 bot.OnUpdate += OnCallbackQuery;
 bot.OnError += OnError;
@@ -73,6 +74,11 @@ async Task OnMessage(Message msg, UpdateType type)
             case "/profile":
                 Task backgroundProfileTask =  Task.Run(async () => 
                     await profileCommand.ProfileCmd(bot, msg, type)
+                );
+                break;
+            case "/notes":
+                Task backgroundNotesTask =  Task.Run(async () => 
+                    await notesCommand.NotesCmd(bot, msg, type)
                 );
                 break;
         }

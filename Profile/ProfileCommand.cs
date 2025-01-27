@@ -7,7 +7,7 @@ using TgBotPractice.DataBase;
 namespace TgBotPractice.Profile;
 public class ProfileCommand
 {
-    private string _city;
+    private string? _city;
     private bool _autoSend;
     private bool _isAdmin;
     public async Task ProfileCmd(ITelegramBotClient botClient, Message msg, UpdateType type)
@@ -20,14 +20,12 @@ public class ProfileCommand
             {
                 _city = findUser.City;
                 _autoSend = findUser.Autosend; // bool
-                //_autoWeather = Convert.ToInt32(findUser.AutoWeather);
                 _isAdmin = findUser.IsAdmin;
             }
             else
             {
                 _city = "Samara";
                 _autoSend = false; // bool
-                //_autoWeather = 0;
                 _isAdmin = false;
                 await DbMethods.DbCheck(msg, botClient);
             }

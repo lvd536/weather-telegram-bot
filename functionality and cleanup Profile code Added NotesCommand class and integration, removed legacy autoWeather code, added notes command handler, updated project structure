@@ -1,0 +1,52 @@
+[1mdiff --git a/Profile/ProfileCommand.cs b/Profile/ProfileCommand.cs[m
+[1mindex 0d8ed3c..7e9483c 100644[m
+[1m--- a/Profile/ProfileCommand.cs[m
+[1m+++ b/Profile/ProfileCommand.cs[m
+[36m@@ -7,7 +7,7 @@[m [musing TgBotPractice.DataBase;[m
+ namespace TgBotPractice.Profile;[m
+ public class ProfileCommand[m
+ {[m
+[31m-    private string _city;[m
+[32m+[m[32m    private string? _city;[m
+     private bool _autoSend;[m
+     private bool _isAdmin;[m
+     public async Task ProfileCmd(ITelegramBotClient botClient, Message msg, UpdateType type)[m
+[36m@@ -20,14 +20,12 @@[m [mpublic class ProfileCommand[m
+             {[m
+                 _city = findUser.City;[m
+                 _autoSend = findUser.Autosend; // bool[m
+[31m-                //_autoWeather = Convert.ToInt32(findUser.AutoWeather);[m
+                 _isAdmin = findUser.IsAdmin;[m
+             }[m
+             else[m
+             {[m
+                 _city = "Samara";[m
+                 _autoSend = false; // bool[m
+[31m-                //_autoWeather = 0;[m
+                 _isAdmin = false;[m
+                 await DbMethods.DbCheck(msg, botClient);[m
+             }[m
+[1mdiff --git a/Program.cs b/Program.cs[m
+[1mindex bb54cf5..da0ef59 100644[m
+[1m--- a/Program.cs[m
+[1m+++ b/Program.cs[m
+[36m@@ -13,6 +13,7 @@[m [mvar me = await bot.GetMe();[m
+ var weatherCommand = new WeatherCommand();[m
+ var startCommand = new StartCommand();[m
+ var profileCommand = new ProfileCommand();[m
+[32m+[m[32mvar notesCommand = new NotesCommand();[m
+ bot.OnMessage += OnMessage;[m
+ bot.OnUpdate += OnCallbackQuery;[m
+ bot.OnError += OnError;[m
+[36m@@ -75,6 +76,11 @@[m [masync Task OnMessage(Message msg, UpdateType type)[m
+                     await profileCommand.ProfileCmd(bot, msg, type)[m
+                 );[m
+                 break;[m
+[32m+[m[32m            case "/notes":[m
+[32m+[m[32m                Task backgroundNotesTask =  Task.Run(async () =>[m[41m [m
+[32m+[m[32m                    await notesCommand.NotesCmd(bot, msg, type)[m
+[32m+[m[32m                );[m
+[32m+[m[32m                break;[m
+         }[m
+     }[m
+     Console.WriteLine($"[Debug] Received {type} '{msg.Text}' in {msg.Chat}");[m
